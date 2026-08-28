@@ -17,22 +17,30 @@ export const gameService = {
     return await apiRequest(`/games/${gameId}/levels/${levelNumber}`);
   },
 
-  async startGameSession(gameId, levelId) {
+  async startGameSession(gameId, levelIdOrNumber) {
+    const payload = typeof gameId === 'object'
+      ? gameId
+      : (typeof levelIdOrNumber === 'number'
+          ? { gameId, levelId: levelIdOrNumber }
+          : { gameId, ...levelIdOrNumber });
+
     return await apiRequest('/game-sessions', {
       method: 'POST',
-      body: JSON.stringify({ gameId, levelId }),
+      body: JSON.stringify(payload),
     });
   },
 
   async completeGameSession(sessionId, score, accuracy, completionTime, metrics) {
+    let payload = {};
+    if (typeof score === 'object' && score !== null) {
+      payload = score;
+    } else {
+      payload = { score, accuracy, completionTime, metrics };
+    }
+
     return await apiRequest(`/game-sessions/${sessionId}/complete`, {
       method: 'POST',
-      body: JSON.stringify({
-        score,
-        accuracy,
-        completionTime,
-        metrics,
-      }),
+      body: JSON.stringify(payload),
     });
   },
 
@@ -42,4 +50,3 @@ export const gameService = {
     });
   },
 };
-

@@ -1,36 +1,38 @@
 import { apiRequest } from './api';
 
 export const progressService = {
-  async getMyStats() {
-    return await apiRequest('/users/me/progress');
+  async getStats() {
+    return await apiRequest('/progress/stats');
   },
 
-  async getAllGameProgress() {
-    return await apiRequest('/users/me/game-progress');
+  async getMyStats() {
+    return await apiRequest('/progress/stats');
   },
 
   async getGameProgress(gameId) {
-    return await apiRequest(`/users/me/game-progress/${gameId}`);
+    if (gameId) {
+      return await apiRequest(`/progress/games/${gameId}`);
+    }
+    return await apiRequest('/progress/games');
   },
 
-  async getRecentResults(page = 0, size = 20) {
-    return await apiRequest(`/users/me/results?page=${page}&size=${size}`);
+  async getAllGameProgress() {
+    return await apiRequest('/progress/games');
   },
 
-  async getGameResults(gameId) {
-    return await apiRequest(`/users/me/games/${gameId}/results`);
+  async getRecentResults(limit = 10) {
+    return await apiRequest(`/progress/recent-results?limit=${limit}`);
   },
 
-  async getGamePerformance(gameId) {
-    return await apiRequest(`/users/me/games/${gameId}/performance`);
+  async getAchievements() {
+    return await apiRequest('/achievements');
   },
 
   async getMyAchievements() {
-    return await apiRequest('/users/me/achievements');
+    return await apiRequest('/achievements');
   },
 
-  async getLeaderboard(limit = 20) {
+  async getLeaderboard(limit = 25) {
     return await apiRequest(`/leaderboards?limit=${limit}`);
   },
 };
-
