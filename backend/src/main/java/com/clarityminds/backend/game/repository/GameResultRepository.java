@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface GameResultRepository extends JpaRepository<GameResult, Long> {
     Optional<GameResult> findBySessionId(Long sessionId);
     Page<GameResult> findByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
+    List<GameResult> findByUserIdOrderByCreatedAtDesc(Long userId);
     List<GameResult> findByUserIdAndGameIdOrderByCreatedAtDesc(Long userId, Long gameId);
     List<GameResult> findByUserIdAndGameIdOrderByCreatedAtAsc(Long userId, Long gameId);
 }
-

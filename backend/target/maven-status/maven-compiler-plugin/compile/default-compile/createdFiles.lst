@@ -1,7 +1,6 @@
 com\clarityminds\backend\common\exception\InvalidGameStateException.class
 com\clarityminds\backend\game\dto\GameLevelResponse.class
 com\clarityminds\backend\common\response\ApiResponse.class
-com\clarityminds\backend\game\service\GameSessionService.class
 com\clarityminds\backend\game\dto\GameResponse.class
 com\clarityminds\backend\game\entity\GameSession.class
 com\clarityminds\backend\game\entity\GameResult.class
@@ -11,8 +10,6 @@ com\clarityminds\backend\progress\dto\PlayerGameProgressResponse.class
 com\clarityminds\backend\user\entity\User.class
 com\clarityminds\backend\config\JwtAuthenticationFilter.class
 com\clarityminds\backend\leaderboard\service\LeaderboardService.class
-com\clarityminds\backend\game\service\GameService.class
-com\clarityminds\backend\progress\controller\ProgressController.class
 com\clarityminds\backend\common\exception\ErrorResponse.class
 com\clarityminds\backend\user\service\UserService.class
 com\clarityminds\backend\progress\repository\PlayerGameProgressRepository.class
@@ -35,7 +32,6 @@ com\clarityminds\backend\user\entity\Role.class
 com\clarityminds\backend\achievement\dto\AchievementResponse.class
 com\clarityminds\backend\achievement\repository\UserAchievementRepository.class
 com\clarityminds\backend\config\JwtTokenProvider.class
-com\clarityminds\backend\progress\service\ProgressService.class
 com\clarityminds\backend\common\exception\InvalidGameResultException.class
 com\clarityminds\backend\game\repository\GameLevelRepository.class
 com\clarityminds\backend\leaderboard\dto\LeaderboardEntryResponse.class
@@ -44,7 +40,6 @@ com\clarityminds\backend\common\exception\GlobalExceptionHandler.class
 com\clarityminds\backend\game\dto\CompleteSessionRequest.class
 com\clarityminds\backend\game\repository\GameResultRepository.class
 com\clarityminds\backend\game\dto\PerformancePointResponse.class
-com\clarityminds\backend\game\controller\GameController.class
 com\clarityminds\backend\game\dto\StartSessionRequest.class
 com\clarityminds\backend\user\dto\RegisterRequest.class
 com\clarityminds\backend\user\controller\UserController.class
@@ -55,10 +50,8 @@ com\clarityminds\backend\user\controller\AuthController.class
 com\clarityminds\backend\achievement\controller\AchievementController.class
 com\clarityminds\backend\achievement\repository\AchievementRepository.class
 com\clarityminds\backend\achievement\entity\Achievement.class
-com\clarityminds\backend\game\repository\GameSessionRepository.class
 com\clarityminds\backend\user\repository\UserRepository.class
 com\clarityminds\backend\game\entity\GameLevel.class
 com\clarityminds\backend\game\entity\Game.class
 com\clarityminds\backend\user\dto\AuthRequest.class
 com\clarityminds\backend\user\dto\UpdateProfileRequest.class
-com\clarityminds\backend\game\controller\GameSessionController.class

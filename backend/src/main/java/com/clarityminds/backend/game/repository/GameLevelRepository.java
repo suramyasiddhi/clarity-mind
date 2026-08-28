@@ -9,8 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface GameLevelRepository extends JpaRepository<GameLevel, Long> {
+    List<GameLevel> findByGameIdOrderByLevelNumberAsc(Long gameId);
     List<GameLevel> findByGameIdAndActiveTrueOrderByLevelNumberAsc(Long gameId);
+    Optional<GameLevel> findByGameIdAndLevelNumber(Long gameId, int levelNumber);
     Optional<GameLevel> findByGameIdAndLevelNumberAndActiveTrue(Long gameId, int levelNumber);
     Optional<GameLevel> findByIdAndGameId(Long id, Long gameId);
 }
-

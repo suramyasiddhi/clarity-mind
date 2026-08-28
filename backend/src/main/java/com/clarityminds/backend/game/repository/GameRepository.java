@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface GameRepository extends JpaRepository<Game, Long> {
     Optional<Game> findByCode(String code);
     List<Game> findAllByActiveTrue();
+    List<Game> findByActiveTrueOrderByDisplayOrderAsc();
     List<Game> findAllByCategoryAndActiveTrue(GameCategory category);
 }
-

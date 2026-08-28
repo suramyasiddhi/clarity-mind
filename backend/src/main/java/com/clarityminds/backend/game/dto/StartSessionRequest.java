@@ -7,8 +7,8 @@ public class StartSessionRequest {
     @NotNull(message = "gameId is required")
     private Long gameId;
 
-    @NotNull(message = "levelId is required")
     private Long levelId;
+    private Integer levelNumber;
 
     public StartSessionRequest() {
     }
@@ -16,6 +16,11 @@ public class StartSessionRequest {
     public StartSessionRequest(Long gameId, Long levelId) {
         this.gameId = gameId;
         this.levelId = levelId;
+    }
+
+    public StartSessionRequest(Long gameId, Integer levelNumber) {
+        this.gameId = gameId;
+        this.levelNumber = levelNumber;
     }
 
     public Long getGameId() {
@@ -33,5 +38,12 @@ public class StartSessionRequest {
     public void setLevelId(Long levelId) {
         this.levelId = levelId;
     }
-}
 
+    public Integer getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void setLevelNumber(Integer levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+}

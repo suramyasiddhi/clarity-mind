@@ -27,14 +27,21 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        return Jwts.builder()
+        var builder = Jwts.builder()
                 .subject(username)
-                .claim("userId", userId)
                 .claim("role", role)
                 .issuedAt(now)
-                .expiration(expiryDate)
-                .signWith(getSigningKey(), Jwts.SIG.HS256)
-                .compact();
+                .expiration(expiryDate);
+
+        if (userId != null) {
+            builder.claim("userId", userId);
+        }
+
+        return builder.signWith(getSigningKey(), Jwts.SIG.HS256).compact();
+    }
+
+    public String generateToken(String username, String role) {
+        return generateToken(username, null, role);
     }
 
     public String getUsernameFromJWT(String token) {
@@ -70,4 +77,3 @@ public class JwtTokenProvider {
         }
     }
 }
-
