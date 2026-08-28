@@ -70,25 +70,22 @@ export default function RegisterPage() {
                 type="text"
                 value={displayName()}
                 onInput={(e) => setDisplayName(e.currentTarget.value)}
-                placeholder="e.g. Subham S."
-                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+                placeholder="e.g. Suramya S."
+                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-medium"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
-              Username
-            </label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Username</label>
             <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                <User size={16} />
-              </div>
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 font-mono text-xs">@</span>
               <input
                 type="text"
+                required
                 value={username()}
                 onInput={(e) => setUsername(e.currentTarget.value)}
-                placeholder="e.g. subham_minds"
+                placeholder="e.g. suramya_minds"
                 class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
               />
             </div>

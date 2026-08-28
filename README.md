@@ -111,7 +111,7 @@ You can log in immediately with the pre-seeded demo user or register a new accou
 
 - **Username:** `demo`
 - **Password:** `password123`
-- **Display Name:** `Subham Demo`
+- **Display Name:** `Suramya Demo`
 - **Pre-seeded Progress:** Level 2 player, 2-day streak, 350 XP
 
 ---

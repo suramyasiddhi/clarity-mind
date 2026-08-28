@@ -211,7 +211,7 @@ public class DataSeeder implements CommandLineRunner {
         demo.setUsername("demo");
         demo.setEmail("demo@clarityminds.com");
         demo.setPasswordHash(passwordEncoder.encode("password123"));
-        demo.setDisplayName("Subham Demo");
+        demo.setDisplayName("Suramya Demo");
         demo.setRole(Role.ROLE_USER);
         demo.setActive(true);
         demo = userRepository.save(demo);
