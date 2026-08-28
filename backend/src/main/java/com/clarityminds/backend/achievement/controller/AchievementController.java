@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users/me/achievements")
+@RequestMapping({"/api/v1/achievements", "/api/v1/users/me/achievements"})
 public class AchievementController {
 
     private final AchievementService achievementService;

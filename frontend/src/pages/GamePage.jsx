@@ -40,7 +40,7 @@ export default function GamePage() {
 
   const getHighestUnlockedLevel = () => {
     const prog = player.gameProgress().find((p) => p.gameId === gameId());
-    return prog ? prog.currentLevel : 1;
+    return prog ? (prog.highestUnlockedLevel || prog.currentLevel || 1) : 1;
   };
 
   const handleStartGame = async (level) => {
@@ -48,7 +48,7 @@ export default function GamePage() {
     setSelectedLevel(level);
 
     try {
-      const session = await gameService.startGameSession(gameId(), level.id);
+      const session = await gameService.startGameSession(gameId(), level.id || level.levelNumber);
       setActiveSession(session);
       setIsPlaying(true);
     } catch (err) {
@@ -60,12 +60,13 @@ export default function GamePage() {
     if (!activeSession()) return;
 
     try {
+      const sessionId = activeSession().sessionId || activeSession().id;
       const completionResult = await gameService.completeGameSession(
-        activeSession().sessionId,
+        sessionId,
         rawResult.score,
         rawResult.accuracy,
-        rawResult.completionTime,
-        rawResult.metrics
+        rawResult.completionTime || (rawResult.avgResponseTimeMs ? rawResult.avgResponseTimeMs / 1000 : 1.0),
+        rawResult.metrics || {}
       );
 
       // Refresh global player state
@@ -74,7 +75,7 @@ export default function GamePage() {
       // Store result and navigate to results screen
       player.setLastGameResult({
         ...completionResult,
-        gameName: game()?.name,
+        gameName: game()?.name || game()?.title,
         gameId: gameId(),
         levelNumber: selectedLevel()?.levelNumber,
         category: game()?.category,
@@ -90,7 +91,8 @@ export default function GamePage() {
   const handleAbandon = async () => {
     if (activeSession()) {
       try {
-        await gameService.abandonGameSession(activeSession().sessionId);
+        const sessionId = activeSession().sessionId || activeSession().id;
+        await gameService.abandonGameSession(sessionId);
       } catch (err) {
         console.warn('Abandon error:', err);
       }
@@ -243,4 +245,3 @@ export default function GamePage() {
     </div>
   );
 }
-

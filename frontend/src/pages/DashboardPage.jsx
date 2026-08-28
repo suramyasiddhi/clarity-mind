@@ -23,9 +23,9 @@ export default function DashboardPage() {
   const xpProgressPercent = () => {
     const stats = player.stats();
     if (!stats) return 0;
-    const currentBase = stats.xpForCurrentLevel || 0;
-    const nextTarget = stats.xpForNextLevel || 100;
     const currentTotal = stats.totalXp || 0;
+    const nextTarget = (Math.floor(currentTotal / 100) + 1) * 100;
+    const currentBase = Math.floor(currentTotal / 100) * 100;
 
     const diff = nextTarget - currentBase;
     if (diff <= 0) return 100;
@@ -90,7 +90,7 @@ export default function DashboardPage() {
               Level {player.stats()?.level || 1} Progress
             </span>
             <span class="text-cyan-400 font-mono">
-              {player.stats()?.totalXp || 0} / {player.stats()?.xpForNextLevel || 100} XP ({xpProgressPercent()}%)
+              {player.stats()?.totalXp || 0} XP ({xpProgressPercent()}%)
             </span>
           </div>
           <div class="w-full bg-slate-900 rounded-full h-3 p-0.5 border border-slate-700/80">
@@ -115,45 +115,49 @@ export default function DashboardPage() {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <For each={player.gameProgress()}>
-            {(prog) => (
-              <div class={`glass-card rounded-3xl p-6 border ${getGameBorderColor(prog.gameCode)} flex flex-col justify-between`}>
-                <div>
-                  <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-2xl bg-slate-900/80 border border-slate-700 flex items-center justify-center">
-                      {getGameIcon(prog.gameCode)}
+            {(prog) => {
+              const currentLvl = prog.highestUnlockedLevel || prog.currentLevel || 1;
+              const title = prog.gameTitle || prog.gameName || 'Training Module';
+              return (
+                <div class={`glass-card rounded-3xl p-6 border ${getGameBorderColor(prog.gameCode)} flex flex-col justify-between`}>
+                  <div>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="w-12 h-12 rounded-2xl bg-slate-900/80 border border-slate-700 flex items-center justify-center">
+                        {getGameIcon(prog.gameCode)}
+                      </div>
+                      <span class="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-xs font-bold font-mono text-cyan-300">
+                        Level {currentLvl} / 10
+                      </span>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-xs font-bold font-mono text-cyan-300">
-                      Level {prog.currentLevel} / 10
-                    </span>
+
+                    <h3 class="text-lg font-bold text-white mb-1">{title}</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2 mb-4">
+                      {prog.gameCode?.includes('REACTION') && 'Improve motor reflex and visual stimulus latency.'}
+                      {prog.gameCode?.includes('MEMORY') && 'Enhance working memory retention & reverse reproduction.'}
+                      {prog.gameCode?.includes('ATTENTION') && 'Sharpen target identification speed in high distractor matrix.'}
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs mb-6">
+                      <div>
+                        <span class="text-[10px] text-slate-500 font-bold block uppercase">Best Score</span>
+                        <span class="font-bold text-white font-mono">{prog.bestScore || 0} pts</span>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-slate-500 font-bold block uppercase">Attempts</span>
+                        <span class="font-bold text-white font-mono">{prog.totalAttempts || prog.totalCompleted || 0} sessions</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <h3 class="text-lg font-bold text-white mb-1">{prog.gameName}</h3>
-                  <p class="text-xs text-slate-400 line-clamp-2 mb-4">
-                    {prog.gameCode?.includes('REACTION') && 'Improve motor reflex and visual stimulus latency.'}
-                    {prog.gameCode?.includes('MEMORY') && 'Enhance working memory retention & reverse reproduction.'}
-                    {prog.gameCode?.includes('ATTENTION') && 'Sharpen target identification speed in high distractor matrix.'}
-                  </p>
-
-                  <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs mb-6">
-                    <div>
-                      <span class="text-[10px] text-slate-500 font-bold block uppercase">Best Score</span>
-                      <span class="font-bold text-white font-mono">{prog.bestScore} pts</span>
-                    </div>
-                    <div>
-                      <span class="text-[10px] text-slate-500 font-bold block uppercase">Completed</span>
-                      <span class="font-bold text-white font-mono">{prog.totalCompleted} sessions</span>
-                    </div>
-                  </div>
+                  <A
+                    href={`/games/${prog.gameId}`}
+                    class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-95"
+                  >
+                    <Play size={14} fill="currentColor" /> Play Level {currentLvl}
+                  </A>
                 </div>
-
-                <A
-                  href={`/games/${prog.gameId}`}
-                  class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-95"
-                >
-                  <Play size={14} fill="currentColor" /> Play Level {prog.currentLevel}
-                </A>
-              </div>
-            )}
+              );
+            }}
           </For>
         </div>
       </section>
@@ -185,16 +189,16 @@ export default function DashboardPage() {
                         </div>
                         <div>
                           <span class="font-bold text-slate-200 block">
-                            Score: {res.score} pts
+                            {res.gameTitle || 'Game'} — Score: {res.score} pts
                           </span>
                           <span class="text-[11px] text-slate-500 font-mono">
-                            {res.accuracy}% accuracy · {res.completionTime}s
+                            {res.accuracy}% accuracy · {res.durationSeconds || res.completionTime || 0}s
                           </span>
                         </div>
                       </div>
 
                       <span class="text-[10px] text-slate-500 font-mono">
-                        {new Date(res.createdAt).toLocaleDateString()}
+                        {res.createdAt ? new Date(res.createdAt).toLocaleDateString() : 'Just now'}
                       </span>
                     </div>
                   )}
@@ -238,4 +242,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

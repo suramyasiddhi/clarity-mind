@@ -11,11 +11,16 @@ export function AuthProvider(props) {
     if (authService.isAuthenticated()) {
       try {
         const profile = await authService.getProfile();
-        setUser(profile);
+        if (profile) {
+          setUser(profile);
+        }
       } catch (err) {
-        console.error('Failed to restore session:', err);
-        authService.logout();
-        setUser(null);
+        console.warn('Session verification note:', err.message);
+        // Only wipe user if strictly 401 Unauthorized
+        if (err.message && (err.message.includes('401') || err.message.includes('expired') || err.message.includes('Unauthorized'))) {
+          authService.logout();
+          setUser(null);
+        }
       }
     }
     setLoading(false);
@@ -23,13 +28,17 @@ export function AuthProvider(props) {
 
   const login = async (username, password) => {
     const res = await authService.login(username, password);
-    setUser(res.user);
+    if (res?.user) {
+      setUser(res.user);
+    }
     return res;
   };
 
   const register = async (username, email, password, displayName) => {
     const res = await authService.register(username, email, password, displayName);
-    setUser(res.user);
+    if (res?.user) {
+      setUser(res.user);
+    }
     return res;
   };
 
@@ -40,7 +49,9 @@ export function AuthProvider(props) {
 
   const updateProfile = async (displayName, email) => {
     const res = await authService.updateProfile({ displayName, email });
-    setUser(res);
+    if (res) {
+      setUser(res);
+    }
     return res;
   };
 
@@ -53,7 +64,7 @@ export function AuthProvider(props) {
         register,
         logout,
         updateProfile,
-        isAuthenticated: () => !!user()
+        isAuthenticated: () => !!user() || authService.isAuthenticated()
       }}
     >
       {props.children}
@@ -66,4 +77,3 @@ export function useAuth() {
   if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 }
-
